@@ -12,6 +12,6 @@
     <Reference Include="Microsoft.Build.Framework" />
     <Reference Include="Microsoft.Build.Utilities.v4.0" />
 
-    <Content Include="Sunburst.WindowsForms.Ribbon.targets" PackagePath="build" />
+    <Content Include="Sunburst.WindowsForms.Ribbon.targets" Pack="true" PackagePath="build" />
   </ItemGroup>
 </Project>
