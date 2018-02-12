@@ -1,11 +1,18 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net45</TargetFramework>
+    <PackProjectReferences>true</PackProjectReferences>
   </PropertyGroup>
 
   <ItemGroup>
     <Reference Include="System.Design" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
+
+    <ProjectReference Include="../Sunburst.WindowsForms.Ribbon.BuildTasks/Sunburst.WindowsForms.Ribbon.BuildTasks.csproj">
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <Pack>true</Pack>
+      <PackagePath>build</PackagePath>
+    </ProjectReference>
   </ItemGroup>
 </Project>
