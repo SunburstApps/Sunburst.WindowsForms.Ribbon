@@ -9,6 +9,7 @@
   </ItemGroup>
 
   <PropertyGroup>
+    <WindowsSDKBuildVersion Condition="Exists('$(MSBuildProgramFiles32)\Windows Kits\10\bin\10.0.15063.0')">15063</WindowsSDKBuildVersion>
     <WindowsSDKBuildVersion Condition="'$(WindowsSDKBuildVersion)' == ''">16299</WindowsSDKBuildVersion>
   </PropertyGroup>
 
@@ -73,7 +74,7 @@
       </_RibbonResourceContent>
 
       <Content Include="@(_RibbonResourceContent)" Condition="Exists('%(FullPath)')">
-        <Link>%(Architecture)\%(FileName)%(Extension)</Link>
+        <Link>%(_RibbonResourceContent.Architecture)\%(FileName)%(Extension)</Link>
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         <Visible>false</Visible>
       </Content>

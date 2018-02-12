@@ -9,6 +9,12 @@ namespace Sunburst.WindowsForms.BuildTasks
 {
     public sealed class LinkRibbonResource : VisualStudioToolTask
     {
+        private string GetMSVCToolsVersion()
+        {
+            string filePath = Path.Combine(VisualStudioInstallRoot, @"VC\Auxiliary\Build\Microsoft.VCToolsVersion.default.txt");
+            return File.ReadAllText(filePath).Trim();
+        }
+
         [Required]
         public ITaskItem[] Objects { get; set; }
 
@@ -23,7 +29,7 @@ namespace Sunburst.WindowsForms.BuildTasks
 
         public override string[] RequiredWorkloads => new[] { $"Microsoft.VisualCpp.Tools.Host{Architecture.ToUpperInvariant()}.Target{Architecture.ToUpperInvariant()}" };
 
-        public override string InstallRootRelativeToolPath => $@"VC\Tools\MSVC\14.11.25503\bin\Host{Architecture}\{Architecture}\link.exe";
+        public override string InstallRootRelativeToolPath => $@"VC\Tools\MSVC\{GetMSVCToolsVersion()}\bin\Host{Architecture}\{Architecture}\link.exe";
 
         protected override string GenerateCommandLineCommands()
         {
