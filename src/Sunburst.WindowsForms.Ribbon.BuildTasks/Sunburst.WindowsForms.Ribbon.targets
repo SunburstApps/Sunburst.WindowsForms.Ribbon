@@ -15,9 +15,9 @@
   <Target Name="CompileRibbonResources" BeforeTargets="BeforeBuild" Condition="'@(RibbonDefinition)' != ''"
           DependsOnTargets="_CompileRibbonUICC;_CompileRibbonResourceFiles;_LinkRibbonResourceFiles" />
 
-  <UsingTask TaskName="RibbonUICC" AssemblyFile="$(MSBuildThisFileDirectory)\bin\$(Configuration)\net46\Sunburst.WindowsForms.BuildTasks.dll" />
-  <UsingTask TaskName="RibbonCompileRC" AssemblyFile="$(MSBuildThisFileDirectory)\bin\$(Configuration)\net46\Sunburst.WindowsForms.BuildTasks.dll" />
-  <UsingTask TaskName="LinkRibbonResource" AssemblyFile="$(MSBuildThisFileDirectory)\bin\$(Configuration)\net46\Sunburst.WindowsForms.BuildTasks.dll" />
+  <UsingTask TaskName="RibbonUICC" AssemblyFile="$(MSBuildThisFileDirectory)\Sunburst.WindowsForms.Ribbon.BuildTasks.dll" />
+  <UsingTask TaskName="RibbonCompileRC" AssemblyFile="$(MSBuildThisFileDirectory)\Sunburst.WindowsForms.Ribbon.BuildTasks.dll" />
+  <UsingTask TaskName="LinkRibbonResource" AssemblyFile="$(MSBuildThisFileDirectory)\Sunburst.WindowsForms.Ribbon.BuildTasks.dll" />
 
   <Target Name="_ComputeRibbonResourceFiles" Condition="'@(RibbonDefinition)' != ''">
     <ItemGroup>
