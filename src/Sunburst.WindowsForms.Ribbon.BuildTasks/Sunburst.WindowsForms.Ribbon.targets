@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Project>
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <AvailableItemName Include="RibbonDefinition" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <WindowsSDKBuildVersion Condition="'$(WindowsSDKBuildVersion)' == ''">16299</WindowsSDKBuildVersion>
+  </PropertyGroup>
+
+  <Target Name="CompileRibbonResources" BeforeTargets="BeforeBuild" Condition="'@(RibbonDefinition)' != ''"
+          DependsOnTargets="_CompileRibbonUICC;_CompileRibbonResourceFiles;_LinkRibbonResourceFiles" />
+
+  <UsingTask TaskName="RibbonUICC" AssemblyFile="$(MSBuildThisFileDirectory)\bin\$(Configuration)\net46\Sunburst.WindowsForms.BuildTasks.dll" />
+  <UsingTask TaskName="RibbonCompileRC" AssemblyFile="$(MSBuildThisFileDirectory)\bin\$(Configuration)\net46\Sunburst.WindowsForms.BuildTasks.dll" />
+  <UsingTask TaskName="LinkRibbonResource" AssemblyFile="$(MSBuildThisFileDirectory)\bin\$(Configuration)\net46\Sunburst.WindowsForms.BuildTasks.dll" />
+
+  <Target Name="_ComputeRibbonResourceFiles" Condition="'@(RibbonDefinition)' != ''">
+    <ItemGroup>
+      <_RibbonResourceFile Condition="'$(Platform)' == 'x86' or '$(Platform)' == 'AnyCPU'" Include="@(RibbonDefinition -> '$(IntermediateOutputPath)\%(FileName).x86.ribbon\%(FileName).rc')">
+        <SourceFilePath>%(RibbonDefinition.FullPath)</SourceFilePath>
+        <Architecture>x86</Architecture>
+      </_RibbonResourceFile>
+      <_RibbonResourceFile Condition="'$(Platform)' == 'x64' or '$(Platform)' == 'AnyCPU'" Include="@(RibbonDefinition -> '$(IntermediateOutputPath)\%(FileName).x64.ribbon\%(FileName).rc')">
+        <SourceFilePath>%(RibbonDefinition.FullPath)</SourceFilePath>
+        <Architecture>x64</Architecture>
+      </_RibbonResourceFile>
+      <_RibbonResourceObject Condition="'$(Platform)' == 'x86' or '$(Platform)' == 'AnyCPU'" Include="@(RibbonDefinition -> '$(IntermediateOutputPath)\%(FileName).x86.ribbon\%(FileName).res')">
+        <Architecture>x86</Architecture>
+      </_RibbonResourceObject>
+      <_RibbonResourceObject Condition="'$(Platform)' == 'x64' or '$(Platform)' == 'AnyCPU'" Include="@(RibbonDefinition -> '$(IntermediateOutputPath)\%(FileName).x64.ribbon\%(FileName).res')">
+        <Architecture>x64</Architecture>
+      </_RibbonResourceObject>
+
+      <FileWrites Include="@(_RibbonResourceFile)" />
+      <FileWrites Include="@(_RibbonResourceObject)" />
+    </ItemGroup>
+  </Target>
+
+  <Target Name="_CompileRibbonUICC" Inputs="@(RibbonDefinition)" Outputs="@(_RibbonResourceFile)" DependsOnTargets="_ComputeRibbonResourceFiles" Condition="'@(RibbonDefinition)' != ''">
+    <RibbonUICC RibbonDefinition="@(RibbonDefinition)" OutputDirectory="$(IntermediateOutputPath)\%(FileName).x86.ribbon"
+                WindowsSDKBuildVersion="$(WindowsSDKBuildVersion)" Condition="'$(Platform)' == 'x86' or '$(Platform)' == 'AnyCPU'" />
+    <RibbonUICC RibbonDefinition="@(RibbonDefinition)" OutputDirectory="$(IntermediateOutputPath)\%(FileName).x64.ribbon"
+                WindowsSDKBuildVersion="$(WindowsSDKBuildVersion)" Condition="'$(Platform)' == 'x64' or '$(Platform)' == 'AnyCPU'" />
+  </Target>
+
+  <Target Name="_CompileRibbonResourceFiles" Inputs="@(_RibbonResourceFile)" Outputs="@(_RibbonResourceObject)"
+          DependsOnTargets="_ComputeRibbonResourceFiles;_CompileRibbonUICC" Condition="'@(_RibbonResourceFile)' != ''">
+    <RibbonCompileRC ResourceScript="@(_RibbonResourceFile)" OutputDirectory="$(IntermediateOutputPath)\%(FileName).x86.ribbon" Architecture="x86"
+                     WindowsSDKBuildVersion="$(WindowsSDKBuildVersion)" Condition="'%(Architecture)' == 'x86' and ('$(Platform)' == 'x86' or '$(Platform)' == 'AnyCPU')" />
+    <RibbonCompileRC ResourceScript="@(_RibbonResourceFile)" OutputDirectory="$(IntermediateOutputPath)\%(FileName).x64.ribbon" Architecture="x64"
+                     WindowsSDKBuildVersion="$(WindowsSDKBuildVersion)" Condition="'%(Architecture)' == 'x64' and ('$(Platform)' == 'x64' or '$(Platform)' == 'AnyCPU')" />
+  </Target>
+
+  <Target Name="_LinkRibbonResourceFilesImpl" Inputs="@(_RibbonResourceObject)" Outputs="$(IntermediateOutputPath)\%(Architecture)\%(FileName).ribbon"
+          DependsOnTargets="_ComputeRibbonResourceFiles" Condition="'@(RibbonDefinition)' != ''">
+    <LinkRibbonResource Objects="@(_RibbonResourceObject)" OutputFile="$(IntermediateOutputPath)\%(FileName).%(Architecture).ribbon\%(FileName).ribbon"
+                        Architecture="%(Architecture)" WindowsSDKBuildVersion="$(WindowsSDKBuildVersion)"
+                        Condition="'%(Architecture)' == 'x86' and ('$(Platform)' == 'x86' or '$(Platform)' == 'AnyCPU')" />
+    <LinkRibbonResource Objects="@(_RibbonResourceObject)" OutputFile="$(IntermediateOutputPath)\%(FileName).%(Architecture).ribbon\%(FileName).ribbon"
+                        Architecture="%(Architecture)" WindowsSDKBuildVersion="$(WindowsSDKBuildVersion)"
+                        Condition="'%(Architecture)' == 'x64' and ('$(Platform)' == 'x64' or '$(Platform)' == 'AnyCPU')" />
+  </Target>
+
+  <Target Name="_LinkRibbonResourceFiles" DependsOnTargets="_LinkRibbonResourceFilesImpl" Condition="'@(RibbonDefinition)' != ''">
+    <ItemGroup>
+      <_RibbonResourceContent Include="@(_RibbonResourceObject -> '$(IntermediateOutputPath)\%(FileName).%(Architecture).ribbon\%(FileName).ribbon')">
+        <Architecture>%(Architecture)</Architecture>
+      </_RibbonResourceContent>
+
+      <Content Include="@(_RibbonResourceContent)" Condition="Exists('%(FullPath)')">
+        <Link>%(Architecture)\%(FileName)%(Extension)</Link>
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        <Visible>false</Visible>
+      </Content>
+
+      <FileWrites Include="@(_RibbonResourceContent)" />
+    </ItemGroup>
+  </Target>
+</Project>
