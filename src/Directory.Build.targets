@@ -4,23 +4,40 @@
   </PropertyGroup>
 
   <Target Name="PackProjectReferences" BeforeTargets="_GetPackageFiles" Condition="'$(PackProjectReferences)' == 'true'">
+    <MSBuild Projects="@(ProjectReference)" Properties="IncludeSymbols=$(IncludeSymbols)"
+             Targets="_GetProjectReferencePackFiles" Condition="'%(ProjectReference.Pack)' == 'true'">
+      <Output TaskParameter="TargetOutputs" ItemName="_ProjectReferencePackOutput" />
+    </MSBuild>
+
     <ItemGroup>
-      <_PackableProjectReference Include="@(ProjectReference)" Condition="'%(ProjectReference.Pack)' == 'true' and '%(ProjectReference.PackagePath)' != ''" />
-      <_PackableProjectReference Include="@(ProjectReference)" Condition="'%(ProjectReference.Pack)' == 'true' and '%(ProjectReference.PackagePath)' == ''">
-        <PackagePath>lib\$(TargetFramework)</PackagePath>
-      </_PackableProjectReference>
+      <Content Include="@(_ProjectReferencePackOutput)">
+        <Pack>true</Pack>
+        <PackagePath>%(PackagePath)</PackagePath>
+      </Content>
     </ItemGroup>
-
-    <CreateItem Include="@(_PackableProjectReference -> '$(OutputPath)%(FileName).dll')" AdditionalMetadata="Pack=true; PackagePath=%(PackagePath)">
-      <Output TaskParameter="Include" ItemName="Content" />
-    </CreateItem>
-
-    <CreateItem Include="@(_PackableProjectReference -> '$(OutputPath)%(FileName).pdb')" AdditionalMetadata="Pack=true; PackagePath=%(PackagePath)" Condition="'$(IncludeSymbols)' == 'true'">
-      <Output TaskParameter="Include" ItemName="_TargetPathsToSymbols" />
-    </CreateItem>
 
     <ItemGroup>
       <ProjectReference Update="@(ProjectReference)" PrivateAssets="all" Condition="'%(ProjectReference.Pack)' == 'true'" />
+    </ItemGroup>
+  </Target>
+
+  <Target Name="_GetProjectReferencePackFiles" Returns="@(_ProjectReferencePackFile)" DependsOnTargets="Build">
+    <PropertyGroup>
+      <_ResolvedBuildOutputTargetFolder Condition="'$(BuildOutputTargetFolder)' != ''">$(BuildOutputTargetFolder)</_ResolvedBuildOutputTargetFolder>
+      <_ResolvedBuildOutputTargetFolder Condition="'$(_ResolvedBuildOutputTargetFolder)' == ''">lib/$(TargetFramework)</_ResolvedBuildOutputTargetFolder>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <_ProjectReferencePackFile Include="$(TargetPath)">
+        <PackagePath>$(_ResolvedBuildOutputTargetFolder)</PackagePath>
+      </_ProjectReferencePackFile>
+      <_ProjectReferencePackFile Include="$(TargetDir)$(TargetName).pdb" Condition="'$(IncludeSymbols)' == 'true'">
+        <PackagePath>$(_ResolvedBuildOutputTargetFolder)</PackagePath>
+      </_ProjectReferencePackFile>
+
+      <_ProjectReferencePackFile Include="@(Content)" Condition="'%(Content.Pack)' == 'true' and '%(Content.PackagePath)' != ''">
+        <PackagePath>%(PackagePath)</PackagePath>
+      </_ProjectReferencePackFile>
     </ItemGroup>
   </Target>
 </Project>
