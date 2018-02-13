@@ -2,6 +2,14 @@
   <PropertyGroup>
     <TargetFramework>net45</TargetFramework>
     <PackProjectReferences>true</PackProjectReferences>
+
+    <Title>Windows Forms Ribbon Library</Title>
+    <Authors>William Kent</Authors>
+    <Description>Provides a complete binding to the UIRibbon API, as well as build tasks that compile Ribbon definition XML files.</Description>
+    <Copyright>Copyright © 2018 William Kent. Licensed under the Ms-PL.</Copyright>
+    <PackageLicenseUrl>https://github.com/SunburstApps/Sunburst.WindowsForms.Ribbon/blob/master/LICENSE.txt</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/SunburstApps/Sunburst.WindowsForms.Ribbon</PackageProjectUrl>
+    <PackageTags>ribbon;windows-forms</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
