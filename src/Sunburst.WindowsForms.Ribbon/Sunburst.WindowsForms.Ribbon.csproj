@@ -10,7 +10,7 @@
     <PackageLicenseUrl>https://github.com/SunburstApps/Sunburst.WindowsForms.Ribbon/blob/master/LICENSE.txt</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/SunburstApps/Sunburst.WindowsForms.Ribbon</PackageProjectUrl>
     <PackageTags>ribbon;windows-forms</PackageTags>
-    <Version>1.0.1</Version>
+    <Version>1.1.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
