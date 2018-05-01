@@ -9,8 +9,12 @@
   </ItemGroup>
 
   <PropertyGroup>
-    <WindowsSDKBuildVersion Condition="Exists('$(MSBuildProgramFiles32)\Windows Kits\10\bin\10.0.15063.0')">15063</WindowsSDKBuildVersion>
-    <WindowsSDKBuildVersion Condition="'$(WindowsSDKBuildVersion)' == ''">16299</WindowsSDKBuildVersion>
+    <WindowsSDKBuildVersion Condition="Exists('$(MSBuildProgramFiles32)\Windows Kits\10\bin\10.0.17134.0\x86\uicc.exe')">17134</WindowsSDKBuildVersion>
+    <WindowsSDKBuildVersion Condition="Exists('$(MSBuildProgramFiles32)\Windows Kits\10\bin\10.0.16299.0\x86\uicc.exe')">16299</WindowsSDKBuildVersion>
+    <WindowsSDKBuildVersion Condition="Exists('$(MSBuildProgramFiles32)\Windows Kits\10\bin\10.0.15063.0\x86\uicc.exe')">15063</WindowsSDKBuildVersion>
+    <WindowsSDKBuildVersion Condition="Exists('$(MSBuildProgramFiles32)\Windows Kits\10\bin\10.0.14393.0\x86\uicc.exe')">14393</WindowsSDKBuildVersion>
+    <WindowsSDKBuildVersion Condition="Exists('$(MSBuildProgramFiles32)\Windows Kits\10\bin\10.0.10586.0\x86\uicc.exe')">10586</WindowsSDKBuildVersion>
+    <WindowsSDKBuildVersion Condition="Exists('$(MSBuildProgramFiles32)\Windows Kits\10\bin\10.0.10240.0\x86\uicc.exe')">10240</WindowsSDKBuildVersion>
   </PropertyGroup>
 
   <Target Name="CompileRibbonResources" BeforeTargets="BeforeBuild" Condition="'@(RibbonDefinition)' != ''"
