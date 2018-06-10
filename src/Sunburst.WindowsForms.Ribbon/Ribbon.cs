@@ -291,7 +291,7 @@ namespace Sunburst.WindowsForms.Ribbon
 
             if (_loadedDllHandle == IntPtr.Zero)
             {
-                throw new ApplicationException("Ribbon resource DLL exists but could not be loaded.");
+                throw new FileNotFoundException("Could not load Ribbon DLL", ribbonDllName, new Win32Exception());
             }
 
             InitFramework(resourceName, _loadedDllHandle);
