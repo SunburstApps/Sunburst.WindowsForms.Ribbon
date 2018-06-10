@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net45</TargetFramework>
     <PackProjectReferences>true</PackProjectReferences>
@@ -23,5 +23,7 @@
       <Pack>true</Pack>
       <PackagePath>build</PackagePath>
     </ProjectReference>
+
+    <None Update="VisualStudioToolsManifest.xml" Pack="true" PackagePath="tools" />
   </ItemGroup>
 </Project>

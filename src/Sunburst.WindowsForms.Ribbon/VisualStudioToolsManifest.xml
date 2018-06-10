@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8" ?> 
+<FileList>
+  <File Reference="Sunburst.WindowsForms.Ribbon.dll">
+    <ToolboxItems VSCategory="Sunburst Ribbon Framework" BlendCategory="Sunburst Ribbon Framework">
+      <Item Name="Sunbusrt.WindowsForms.Ribbon.Ribbon" />
+    </ToolboxItems>
+  </File>
+</FileList>
