@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netstandard20</TargetFramework>
+    <TargetFramework>net46</TargetFramework>
     <EnableDefaultNoneItems>false</EnableDefaultNoneItems>
     <BuildOutputTargetFolder>build</BuildOutputTargetFolder>
   </PropertyGroup>
