@@ -1,13 +1,13 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net45</TargetFramework>
+    <TargetFramework>netstandard20</TargetFramework>
     <EnableDefaultNoneItems>false</EnableDefaultNoneItems>
     <BuildOutputTargetFolder>build</BuildOutputTargetFolder>
   </PropertyGroup>
 
   <ItemGroup>
-    <Reference Include="Microsoft.Build.Framework" />
-    <Reference Include="Microsoft.Build.Utilities.v4.0" />
+    <PackageReference Include="Microsoft.Build.Framework" Version="15.7.*" />
+    <PackageReference Include="Microsoft.Build.Utilities.Core" Version="15.7.*" />
 
     <Content Include="Sunburst.WindowsForms.Ribbon.targets" Pack="true" PackagePath="build" />
   </ItemGroup>
