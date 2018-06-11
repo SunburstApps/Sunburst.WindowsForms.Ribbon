@@ -17,6 +17,7 @@
     <Reference Include="System.Design" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
+    <PackageReference Include="System.Runtime.InteropServices.RuntimeInformation" Version="4.3.0" />
 
     <ProjectReference Include="../Sunburst.WindowsForms.Ribbon.BuildTasks/Sunburst.WindowsForms.Ribbon.BuildTasks.csproj">
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>

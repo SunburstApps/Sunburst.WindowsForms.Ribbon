@@ -268,9 +268,17 @@ namespace Sunburst.WindowsForms.Ribbon
         /// <param name="form">Form where ribbon should reside</param>
         void InitFramework(string ribbonResource, Assembly ribbonAssembly)
         {
-            string directoryName = (IntPtr.Size == 8) ? "x64" : "x86";
-            string path = Path.Combine(Path.GetDirectoryName(ribbonAssembly.Location), directoryName, ribbonResource + ".ribbon");
+            string directoryName;
+            switch (RuntimeInformation.OSArchitecture)
+            {
+                case Architecture.X86: directoryName = "x86"; break;
+                case Architecture.X64: directoryName = "x64"; break;
+                case Architecture.Arm: directoryName = "arm"; break;
+                case Architecture.Arm64: directoryName = "arm64"; break;
+                default: throw new NotImplementedException("Unrecognized processor architecture");
+            }
 
+            string path = Path.Combine(Path.GetDirectoryName(ribbonAssembly.Location), directoryName, ribbonResource + ".ribbon");
             InitFramework(DefaultResourceName, path);
         }
 
