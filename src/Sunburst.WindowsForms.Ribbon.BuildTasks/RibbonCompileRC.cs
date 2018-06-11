@@ -27,13 +27,25 @@ namespace Sunburst.WindowsForms.BuildTasks
         [Required]
         public string WindowsSDKBuildVersion { get; set; }
 
-        public override string[] RequiredWorkloads => new[] { $"Microsoft.VisualCpp.Tools.HostX86.Target{Architecture.ToUpperInvariant()}" };
+        public override string[] RequiredWorkloads
+        {
+            get
+            {
+                List<string> workloads = new List<string>();
+
+                if (Architecture.Equals("ARM", StringComparison.OrdinalIgnoreCase)) workloads.Add("Microsoft.VisualStudio.Component.VC.Tools.ARM");
+                else if (Architecture.Equals("ARM64", StringComparison.OrdinalIgnoreCase)) workloads.Add("Microsoft.VisualStudio.Component.VC.Tools.ARM64");
+                else workloads.Add("Microsoft.VisualStudio.Component.VC.Tools.x86.x64");
+
+                return workloads.ToArray();
+            }
+        }
 
         public override string InstallRootRelativeToolPath => throw new NotImplementedException();
 
         protected override string GenerateFullPathToTool()
         {
-            return $@"C:\Program Files (x86)\Windows Kits\10\bin\10.0.{WindowsSDKBuildVersion}.0\{Architecture}\rc.exe";
+            return $@"C:\Program Files (x86)\Windows Kits\10\bin\10.0.{WindowsSDKBuildVersion}.0\x86\rc.exe";
         }
 
         protected override string GetWorkingDirectory()

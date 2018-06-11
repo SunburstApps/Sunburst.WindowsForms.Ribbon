@@ -27,9 +27,21 @@ namespace Sunburst.WindowsForms.BuildTasks
         [Required]
         public string WindowsSDKBuildVersion { get; set; }
 
-        public override string[] RequiredWorkloads => new[] { $"Microsoft.VisualCpp.Tools.HostX86.Target{Architecture.ToUpperInvariant()}" };
+        public override string[] RequiredWorkloads
+        {
+            get
+            {
+                List<string> workloads = new List<string>();
 
-        public override string InstallRootRelativeToolPath => $@"VC\Tools\MSVC\{GetMSVCToolsVersion()}\bin\Host{Architecture}\{Architecture}\link.exe";
+                if (Architecture.Equals("ARM", StringComparison.OrdinalIgnoreCase)) workloads.Add("Microsoft.VisualStudio.Component.VC.Tools.ARM");
+                else if (Architecture.Equals("ARM64", StringComparison.OrdinalIgnoreCase)) workloads.Add("Microsoft.VisualStudio.Component.VC.Tools.ARM64");
+                else workloads.Add("Microsoft.VisualStudio.Component.VC.Tools.x86.x64");
+
+                return workloads.ToArray();
+            }
+        }
+
+        public override string InstallRootRelativeToolPath => $@"VC\Tools\MSVC\{GetMSVCToolsVersion()}\bin\HostX86\{Architecture}\link.exe";
 
         protected override string GenerateCommandLineCommands()
         {
