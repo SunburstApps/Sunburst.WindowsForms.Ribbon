@@ -9,6 +9,12 @@ namespace Sunburst.WindowsForms.BuildTasks
 {
     public class RibbonCompileRC : VisualStudioToolTask
     {
+        private string GetMSVCToolsVersion()
+        {
+            string filePath = Path.Combine(VisualStudioInstallRoot, @"VC\Auxiliary\Build\Microsoft.VCToolsVersion.default.txt");
+            return File.ReadAllText(filePath).Trim();
+        }
+
         [Required]
         public ITaskItem ResourceScript { get; set; }
 
@@ -54,8 +60,8 @@ namespace Sunburst.WindowsForms.BuildTasks
                 $@"C:\Program Files (x86)\Windows Kits\10\include\10.0.{WindowsSDKBuildVersion}.0\shared",
                 $@"C:\Program Files (x86)\Windows Kits\10\include\10.0.{WindowsSDKBuildVersion}.0\um",
                 $@"C:\Program Files (x86)\Windows Kits\10\include\10.0.{WindowsSDKBuildVersion}.0\winrt",
-                $@"{VisualStudioInstallRoot}\VC\Tools\MSVC\14.10.25503\ATLMFC\include",
-                $@"{VisualStudioInstallRoot}\VC\Tools\MSVC\14.10.25503\include"
+                $@"{VisualStudioInstallRoot}\VC\Tools\MSVC\{GetMSVCToolsVersion()}\ATLMFC\include",
+                $@"{VisualStudioInstallRoot}\VC\Tools\MSVC\{GetMSVCToolsVersion()}\include"
             };
 
             argv.AddRange(includePaths.Select(path => "/i" + path));
