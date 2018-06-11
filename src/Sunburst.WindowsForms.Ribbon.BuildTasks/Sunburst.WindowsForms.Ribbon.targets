@@ -34,11 +34,26 @@
         <SourceFilePath>%(RibbonDefinition.FullPath)</SourceFilePath>
         <Architecture>x64</Architecture>
       </_RibbonResourceFile>
+      <_RibbonResourceFile Condition="'$(Platform)' == 'ARM' or '$(Platform)' == 'AnyCPU'" Include="@(RibbonDefinition -> '$(IntermediateOutputPath)\%(FileName).arm.ribbon\%(FileName).rc')">
+        <SourceFilePath>%(RibbonDefinition.FullPath)</SourceFilePath>
+        <Architecture>ARM</Architecture>
+      </_RibbonResourceFile>
+      <_RibbonResourceFile Condition="'$(Platform)' == 'ARM64' or '$(Platform)' == 'AnyCPU'" Include="@(RibbonDefinition -> '$(IntermediateOutputPath)\%(FileName).arm64.ribbon\%(FileName).rc')">
+        <SourceFilePath>%(RibbonDefinition.FullPath)</SourceFilePath>
+        <Architecture>ARM64</Architecture>
+      </_RibbonResourceFile>
+
       <_RibbonResourceObject Condition="'$(Platform)' == 'x86' or '$(Platform)' == 'AnyCPU'" Include="@(RibbonDefinition -> '$(IntermediateOutputPath)\%(FileName).x86.ribbon\%(FileName).res')">
         <Architecture>x86</Architecture>
       </_RibbonResourceObject>
       <_RibbonResourceObject Condition="'$(Platform)' == 'x64' or '$(Platform)' == 'AnyCPU'" Include="@(RibbonDefinition -> '$(IntermediateOutputPath)\%(FileName).x64.ribbon\%(FileName).res')">
         <Architecture>x64</Architecture>
+      </_RibbonResourceObject>
+      <_RibbonResourceObject Condition="'$(Platform)' == 'ARM' or '$(Platform)' == 'AnyCPU'" Include="@(RibbonDefinition -> '$(IntermediateOutputPath)\%(FileName).arm.ribbon\%(FileName).res')">
+        <Architecture>ARM</Architecture>
+      </_RibbonResourceObject>
+      <_RibbonResourceObject Condition="'$(Platform)' == 'ARM64' or '$(Platform)' == 'AnyCPU'" Include="@(RibbonDefinition -> '$(IntermediateOutputPath)\%(FileName).arm64.ribbon\%(FileName).res')">
+        <Architecture>ARM64</Architecture>
       </_RibbonResourceObject>
 
       <FileWrites Include="@(_RibbonResourceFile)" />
@@ -59,6 +74,10 @@
                      WindowsSDKBuildVersion="$(WindowsSDKBuildVersion)" Condition="'%(Architecture)' == 'x86' and ('$(Platform)' == 'x86' or '$(Platform)' == 'AnyCPU')" />
     <RibbonCompileRC ResourceScript="@(_RibbonResourceFile)" OutputDirectory="$(IntermediateOutputPath)\%(FileName).x64.ribbon" Architecture="x64"
                      WindowsSDKBuildVersion="$(WindowsSDKBuildVersion)" Condition="'%(Architecture)' == 'x64' and ('$(Platform)' == 'x64' or '$(Platform)' == 'AnyCPU')" />
+    <RibbonCompileRC ResourceScript="@(_RibbonResourceFile)" OutputDirectory="$(IntermediateOutputPath)\%(FileName).arm.ribbon" Architecture="arm"
+                     WindowsSDKBuildVersion="$(WindowsSDKBuildVersion)" Condition="'%(Architecture)' == 'ARM' and ('$(Platform)' == 'ARM' or '$(Platform)' == 'AnyCPU')" />
+    <RibbonCompileRC ResourceScript="@(_RibbonResourceFile)" OutputDirectory="$(IntermediateOutputPath)\%(FileName).arm64.ribbon" Architecture="arm64"
+                     WindowsSDKBuildVersion="$(WindowsSDKBuildVersion)" Condition="'%(Architecture)' == 'ARM64' and ('$(Platform)' == 'ARM64' or '$(Platform)' == 'AnyCPU')" />
   </Target>
 
   <Target Name="_LinkRibbonResourceFilesImpl" Inputs="@(_RibbonResourceObject)" Outputs="$(IntermediateOutputPath)\%(Architecture)\%(FileName).ribbon"
@@ -69,6 +88,12 @@
     <LinkRibbonResource Objects="@(_RibbonResourceObject)" OutputFile="$(IntermediateOutputPath)\%(FileName).%(Architecture).ribbon\%(FileName).ribbon"
                         Architecture="%(Architecture)" WindowsSDKBuildVersion="$(WindowsSDKBuildVersion)"
                         Condition="'%(Architecture)' == 'x64' and ('$(Platform)' == 'x64' or '$(Platform)' == 'AnyCPU')" />
+    <LinkRibbonResource Objects="@(_RibbonResourceObject)" OutputFile="$(IntermediateOutputPath)\%(FileName).%(Architecture).ribbon\%(FileName).ribbon"
+                        Architecture="%(Architecture)" WindowsSDKBuildVersion="$(WindowsSDKBuildVersion)"
+                        Condition="'%(Architecture)' == 'ARM' and ('$(Platform)' == 'ARM' or '$(Platform)' == 'AnyCPU')" />
+    <LinkRibbonResource Objects="@(_RibbonResourceObject)" OutputFile="$(IntermediateOutputPath)\%(FileName).%(Architecture).ribbon\%(FileName).ribbon"
+                        Architecture="%(Architecture)" WindowsSDKBuildVersion="$(WindowsSDKBuildVersion)"
+                        Condition="'%(Architecture)' == 'ARM64' and ('$(Platform)' == 'ARM64' or '$(Platform)' == 'AnyCPU')" />
   </Target>
 
   <Target Name="_LinkRibbonResourceFiles" DependsOnTargets="_LinkRibbonResourceFilesImpl" Condition="'@(RibbonDefinition)' != ''">

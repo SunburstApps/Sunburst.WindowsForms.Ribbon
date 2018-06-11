@@ -21,7 +21,7 @@ namespace Sunburst.WindowsForms.BuildTasks
         [Required]
         public string WindowsSDKBuildVersion { get; set; }
 
-        public override string[] RequiredWorkloads => new[] { $"Microsoft.VisualCpp.Tools.Host{Architecture.ToUpperInvariant()}.Target{Architecture.ToUpperInvariant()}" };
+        public override string[] RequiredWorkloads => new[] { $"Microsoft.VisualCpp.Tools.HostX86.Target{Architecture.ToUpperInvariant()}" };
 
         public override string InstallRootRelativeToolPath => throw new NotImplementedException();
 
