@@ -62,6 +62,7 @@ namespace Sunburst.WindowsForms.BuildTasks
             string[] pathAdditions = new[]
             {
                 $@"C:\Program Files (x86)\Windows Kits\10\bin\10.0.{WindowsSDKBuildVersion}.0\{Architecture}",
+                $@"{VisualStudioInstallRoot}\VC\Tools\MSVC\{GetMSVCToolsVersion()}\bin\HostX86\x86",
                 Path.GetDirectoryName(GenerateFullPathToTool())
             };
 
