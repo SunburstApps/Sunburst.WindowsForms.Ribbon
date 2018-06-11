@@ -23,8 +23,20 @@
   <UsingTask TaskName="RibbonUICC" AssemblyFile="$(MSBuildThisFileDirectory)\Sunburst.WindowsForms.Ribbon.BuildTasks.dll" />
   <UsingTask TaskName="RibbonCompileRC" AssemblyFile="$(MSBuildThisFileDirectory)\Sunburst.WindowsForms.Ribbon.BuildTasks.dll" />
   <UsingTask TaskName="LinkRibbonResource" AssemblyFile="$(MSBuildThisFileDirectory)\Sunburst.WindowsForms.Ribbon.BuildTasks.dll" />
+  <UsingTask TaskName="CheckVSWorkloadInstallation" AssemblyFile="$(MSBuildThisFileDirectory)\Sunburst.WindowsForms.Ribbon.BuildTasks.dll" />
 
-  <Target Name="_ComputeRibbonResourceFiles" Condition="'@(RibbonDefinition)' != ''">
+  <Target Name="_CheckRibbonARMToolsInstallation">
+    <!-- VC x86/x64 tools are always assumed to be installed. -->
+    <!-- Since ARM development is not yet mainstream, I will not issue a warning if the ARM/ARM64 tools are not installed. -->
+    <CheckVSWorkloadInstallation RequiredWorkloads="Microsoft.VisualStudio.Component.VC.Tools.ARM">
+      <Output TaskParameter="Present" PropertyName="_VCArmToolsPresent" />
+    </CheckVSWorkloadInstallation>
+    <CheckVSWorkloadInstallation RequiredWorkloads="Microsoft.VisualStudio.Component.VC.Tools.ARM64">
+      <Output TaskParameter="Present" PropertyName="_VCArm64ToolsPresent" />
+    </CheckVSWorkloadInstallation>
+  </Target>
+
+  <Target Name="_ComputeRibbonResourceFiles" Condition="'@(RibbonDefinition)' != ''" DependsOnTargets="_CheckRibbonARMToolsInstallation">
     <ItemGroup>
       <_RibbonResourceFile Condition="'$(Platform)' == 'x86' or '$(Platform)' == 'AnyCPU'" Include="@(RibbonDefinition -> '$(IntermediateOutputPath)\%(FileName).x86.ribbon\%(FileName).rc')">
         <SourceFilePath>%(RibbonDefinition.FullPath)</SourceFilePath>
@@ -34,11 +46,11 @@
         <SourceFilePath>%(RibbonDefinition.FullPath)</SourceFilePath>
         <Architecture>x64</Architecture>
       </_RibbonResourceFile>
-      <_RibbonResourceFile Condition="'$(Platform)' == 'ARM' or '$(Platform)' == 'AnyCPU'" Include="@(RibbonDefinition -> '$(IntermediateOutputPath)\%(FileName).arm.ribbon\%(FileName).rc')">
+      <_RibbonResourceFile Condition="('$(Platform)' == 'ARM' or '$(Platform)' == 'AnyCPU') and '$(_VCArmToolsPresent)' == 'true'" Include="@(RibbonDefinition -> '$(IntermediateOutputPath)\%(FileName).arm.ribbon\%(FileName).rc')">
         <SourceFilePath>%(RibbonDefinition.FullPath)</SourceFilePath>
         <Architecture>ARM</Architecture>
       </_RibbonResourceFile>
-      <_RibbonResourceFile Condition="'$(Platform)' == 'ARM64' or '$(Platform)' == 'AnyCPU'" Include="@(RibbonDefinition -> '$(IntermediateOutputPath)\%(FileName).arm64.ribbon\%(FileName).rc')">
+      <_RibbonResourceFile Condition="('$(Platform)' == 'ARM64' or '$(Platform)' == 'AnyCPU') and '$(_VCArm64ToolsPresent)' == 'true'" Include="@(RibbonDefinition -> '$(IntermediateOutputPath)\%(FileName).arm64.ribbon\%(FileName).rc')">
         <SourceFilePath>%(RibbonDefinition.FullPath)</SourceFilePath>
         <Architecture>ARM64</Architecture>
       </_RibbonResourceFile>
@@ -49,10 +61,10 @@
       <_RibbonResourceObject Condition="'$(Platform)' == 'x64' or '$(Platform)' == 'AnyCPU'" Include="@(RibbonDefinition -> '$(IntermediateOutputPath)\%(FileName).x64.ribbon\%(FileName).res')">
         <Architecture>x64</Architecture>
       </_RibbonResourceObject>
-      <_RibbonResourceObject Condition="'$(Platform)' == 'ARM' or '$(Platform)' == 'AnyCPU'" Include="@(RibbonDefinition -> '$(IntermediateOutputPath)\%(FileName).arm.ribbon\%(FileName).res')">
+      <_RibbonResourceObject Condition="('$(Platform)' == 'ARM' or '$(Platform)' == 'AnyCPU') and '$(_VCArmToolsPresent)' == 'true'" Include="@(RibbonDefinition -> '$(IntermediateOutputPath)\%(FileName).arm.ribbon\%(FileName).res')">
         <Architecture>ARM</Architecture>
       </_RibbonResourceObject>
-      <_RibbonResourceObject Condition="'$(Platform)' == 'ARM64' or '$(Platform)' == 'AnyCPU'" Include="@(RibbonDefinition -> '$(IntermediateOutputPath)\%(FileName).arm64.ribbon\%(FileName).res')">
+      <_RibbonResourceObject Condition="('$(Platform)' == 'ARM64' or '$(Platform)' == 'AnyCPU') and '$(_VCArm64ToolsPresent)' == 'true'" Include="@(RibbonDefinition -> '$(IntermediateOutputPath)\%(FileName).arm64.ribbon\%(FileName).res')">
         <Architecture>ARM64</Architecture>
       </_RibbonResourceObject>
 
