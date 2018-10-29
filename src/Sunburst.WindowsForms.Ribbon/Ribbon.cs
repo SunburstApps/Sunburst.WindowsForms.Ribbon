@@ -668,10 +668,6 @@ namespace Sunburst.WindowsForms.Ribbon
         /// <remarks>This method is used internally by the Ribbon class and should not be called by the user.</remarks>
         public virtual HRESULT Execute(uint commandID, ExecutionVerb verb, PropertyKeyRef key, PropVariantRef currentValue, IUISimplePropertySet commandExecutionProperties)
         {
-#if DEBUG
-            Debug.WriteLine(string.Format("Execute verb: {0} for command {1}", verb, commandID));
-#endif
-
             if (_mapRibbonControls.ContainsKey(commandID))
             {
                 return _mapRibbonControls[commandID].Execute(verb, key, currentValue, commandExecutionProperties);
@@ -692,10 +688,6 @@ namespace Sunburst.WindowsForms.Ribbon
         /// <remarks>This method is used internally by the Ribbon class and should not be called by the user.</remarks>
         public virtual HRESULT UpdateProperty(uint commandID, ref PropertyKey key, PropVariantRef currentValue, ref PropVariant newValue)
         {
-#if DEBUG
-            Debug.WriteLine(string.Format("UpdateProperty key: {0} for command {1}", RibbonProperties.GetPropertyKeyName(ref key), commandID));
-#endif
-
             if (_mapRibbonControls.ContainsKey(commandID))
             {
                 return _mapRibbonControls[commandID].UpdateProperty(ref key, currentValue, ref newValue);
