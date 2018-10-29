@@ -24,7 +24,5 @@
       <Pack>true</Pack>
       <PackagePath>build</PackagePath>
     </ProjectReference>
-
-    <None Update="VisualStudioToolsManifest.xml" Pack="true" PackagePath="tools" />
   </ItemGroup>
 </Project>
