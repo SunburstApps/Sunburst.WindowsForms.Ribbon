@@ -1,6 +1,6 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
   <PropertyGroup>
-    <TargetFramework>net46</TargetFramework>
+    <TargetFrameworks>net46;netcoreapp3.0</TargetFrameworks>
     <PackProjectReferences>true</PackProjectReferences>
 
     <Title>Windows Forms Ribbon Library</Title>
@@ -11,12 +11,11 @@
     <PackageProjectUrl>https://github.com/SunburstApps/Sunburst.WindowsForms.Ribbon</PackageProjectUrl>
     <PackageTags>ribbon;windows-forms</PackageTags>
     <Version>2.1.0</Version>
+
+    <UseWindowsForms>true</UseWindowsForms>
   </PropertyGroup>
 
   <ItemGroup>
-    <Reference Include="System.Design" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Forms" />
     <PackageReference Include="System.Runtime.InteropServices.RuntimeInformation" Version="4.3.0" />
 
     <ProjectReference Include="../Sunburst.WindowsForms.Ribbon.BuildTasks/Sunburst.WindowsForms.Ribbon.BuildTasks.csproj">
