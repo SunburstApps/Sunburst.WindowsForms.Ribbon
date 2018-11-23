@@ -11,4 +11,13 @@
 
     <Content Include="Sunburst.WindowsForms.Ribbon.targets" Pack="true" PackagePath="build" />
   </ItemGroup>
+
+  <Target Name="_GetProjectReferencePackFilesForMultiTargeting" BeforeTargets="_GetProjectReferencePackFiles" DependsOnTargets="Build">
+    <ItemGroup>
+      <Content Include="$(OutputPath)\net46\Sunburst.WindowsForms.Ribbon.BuildTasks.dll" Pack="true" PackagePath="build\net46" />
+      <Content Include="$(OutputPath)\netcoreapp3.0\Sunburst.WindowsForms.Ribbon.BuildTasks.dll" Pack="true" PackagePath="build\netcoreapp3.0" />
+    </ItemGroup>
+
+    <Error Text="Content '%(Identity)' does not exist" Condition="!Exists(@(Content -> '%(Identity)'))" />
+  </Target>
 </Project>
