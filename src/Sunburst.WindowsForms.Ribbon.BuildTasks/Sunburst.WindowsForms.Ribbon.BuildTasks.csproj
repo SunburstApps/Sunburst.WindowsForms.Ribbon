@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net46</TargetFramework>
+    <TargetFrameworks>net46;netcoreapp3.0</TargetFrameworks>
     <EnableDefaultNoneItems>false</EnableDefaultNoneItems>
     <BuildOutputTargetFolder>build</BuildOutputTargetFolder>
   </PropertyGroup>

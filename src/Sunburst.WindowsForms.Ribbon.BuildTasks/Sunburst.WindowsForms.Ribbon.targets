@@ -2,6 +2,8 @@
 <Project>
   <PropertyGroup>
     <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <RibbonBuildTasksFile Condition="'$(MSBuildRuntimeType)' == 'Core'">$(MSBuildThisFileDirectory)\netcoreapp3.0\Sunburst.WindowsForms.Ribbon.BuildTasks.dll</RibbonBuildTasksFile>
+    <RibbonBuildTasksFile Condition="'$(MSBuildRuntimeType)' != 'Core'">$(MSBuildThisFileDirectory)\net46\Sunburst.WindowsForms.Ribbon.BuildTasks.dll</RibbonBuildTasksFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -20,10 +22,10 @@
   <Target Name="CompileRibbonResources" BeforeTargets="BeforeBuild" Condition="'@(RibbonDefinition)' != ''"
           DependsOnTargets="_CompileRibbonUICC;_CompileRibbonResourceFiles;_LinkRibbonResourceFiles" />
 
-  <UsingTask TaskName="RibbonUICC" AssemblyFile="$(MSBuildThisFileDirectory)\Sunburst.WindowsForms.Ribbon.BuildTasks.dll" />
-  <UsingTask TaskName="RibbonCompileRC" AssemblyFile="$(MSBuildThisFileDirectory)\Sunburst.WindowsForms.Ribbon.BuildTasks.dll" />
-  <UsingTask TaskName="LinkRibbonResource" AssemblyFile="$(MSBuildThisFileDirectory)\Sunburst.WindowsForms.Ribbon.BuildTasks.dll" />
-  <UsingTask TaskName="CheckVSWorkloadInstallation" AssemblyFile="$(MSBuildThisFileDirectory)\Sunburst.WindowsForms.Ribbon.BuildTasks.dll" />
+  <UsingTask TaskName="RibbonUICC" AssemblyFile="$(RibbonBuildTasksFile)" />
+  <UsingTask TaskName="RibbonCompileRC" AssemblyFile="$(RibbonBuildTasksFile)" />
+  <UsingTask TaskName="LinkRibbonResource" AssemblyFile="$(RibbonBuildTasksFile)" />
+  <UsingTask TaskName="CheckVSWorkloadInstallation" AssemblyFile="$(RibbonBuildTasksFile)" />
 
   <Target Name="_CheckRibbonARMToolsInstallation">
     <!-- VC x86/x64 tools are always assumed to be installed. -->
