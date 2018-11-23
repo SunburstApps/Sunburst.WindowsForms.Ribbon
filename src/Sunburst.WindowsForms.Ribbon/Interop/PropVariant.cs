@@ -10,6 +10,9 @@
 //
 //****************************************************************************
 
+// Variant marshalling is deprecated, but we don't do that here.
+#pragma warning disable 0618
+
 using System;
 using System.Globalization;
 using System.Runtime.InteropServices;
